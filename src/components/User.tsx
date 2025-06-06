@@ -42,7 +42,7 @@ const User = () => {
           <p>
             Meet <b>{user.firstname}!</b>
           </p>
-          <p>They are passionate about {user.website}</p>
+          <p>Check out their work at {user.website}!</p>
         </>
       ) : null}
     </article>
