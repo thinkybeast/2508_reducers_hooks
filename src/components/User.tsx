@@ -23,18 +23,20 @@ import { randomErrorString } from "@/utils";
 */
 
 const userSchema = z.object({
-  avatar: z.string(),
-  first_name: z.string(),
-  employment: z.object({
-    key_skill: z.string(),
-  }),
+  data: z.array(
+    z.object({
+      firstname: z.string(),
+      email: z.string(),
+      website: z.string(),
+    })
+  ),
 });
 
-type User = z.infer<typeof userSchema>;
+type UserResponse = z.infer<typeof userSchema>;
 
 // Define the initial state of the component data
 type UserState = {
-  user: User | null;
+  user: UserResponse["data"][0] | null;
   isLoading: boolean;
   error: boolean;
 };
@@ -60,7 +62,7 @@ interface FetchUserStartAction {
 
 interface FetchUserSuccessAction {
   type: "FETCH_USER_SUCCESS";
-  payload: User;
+  payload: UserResponse["data"][0];
 }
 
 interface FetchUserErrorAction {
@@ -112,7 +114,7 @@ const User = () => {
       userSchema.parse(userData);
 
       // Set user state
-      setUserState({ type: "FETCH_USER_SUCCESS", payload: userData });
+      setUserState({ type: "FETCH_USER_SUCCESS", payload: userData.data[0] });
     } catch (error) {
       // Set error state and log error
       setUserState({ type: "FETCH_USER_ERROR" });
@@ -139,12 +141,15 @@ const User = () => {
       {user ? (
         <div>
           <div style={{ width: "310px", height: "310px", margin: "0 auto" }}>
-            <img src={user.avatar} key={user.avatar} />
+            <img
+              src={`https://robohash.org/${user.email}`}
+              key={`https://robohash.org/${user.email}`}
+            />
           </div>
           <p>
-            Meet <b>{user.first_name}!</b>
+            Meet <b>{user.firstname}!</b>
           </p>
-          <p>They are passionate about {user.employment.key_skill}</p>
+          <p>They are passionate about {user.website}</p>
           <button onClick={fetchUser}>Not cool enough. Give me another.</button>
         </div>
       ) : null}
