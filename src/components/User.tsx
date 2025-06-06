@@ -6,14 +6,17 @@ import { randomErrorString } from "@/utils";
 import userReducer, { UserAction } from "@/reducers/userReducer";
 
 export const userSchema = z.object({
-  avatar: z.string(),
-  first_name: z.string(),
-  employment: z.object({
-    key_skill: z.string(),
-  }),
+  data: z.array(
+    z.object({
+      firstname: z.string(),
+      email: z.string(),
+      website: z.string(),
+    })
+  ),
 });
 
-export type User = z.infer<typeof userSchema>;
+export type UserResponse = z.infer<typeof userSchema>;
+export type User = UserResponse["data"][0];
 
 // Define the initial state of the component data
 export type UserState = {
@@ -51,7 +54,7 @@ const User = () => {
       userSchema.parse(userData);
 
       // Set user state
-      dispatch(UserAction.UserSuccess(userData));
+      dispatch(UserAction.UserSuccess(userData.data[0]));
     } catch (error) {
       // Set error state and log error
       dispatch(UserAction.UserError());
@@ -78,12 +81,15 @@ const User = () => {
       {user ? (
         <div>
           <div style={{ width: "310px", height: "310px", margin: "0 auto" }}>
-            <img src={user.avatar} key={user.avatar} />
+            <img
+              src={`https://robohash.org/${user.email}`}
+              key={`https://robohash.org/${user.email}`}
+            />
           </div>
           <p>
-            Meet <b>{user.first_name}!</b>
+            Meet <b>{user.firstname}!</b>
           </p>
-          <p>They are passionate about {user.employment.key_skill}</p>
+          <p>They are passionate about {user.website}</p>
           <button onClick={fetchUser}>Not cool enough. Give me another.</button>
         </div>
       ) : null}
