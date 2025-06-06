@@ -43,7 +43,8 @@ const useFetch = <T,>(
     dispatch({ type: "FETCH_LOADING" });
     try {
       await new Promise<void>((resolve) => setTimeout(() => resolve(), 1500));
-      const result = await fetch(url + randomErrorString());
+      randomErrorString();
+      const result = await fetch(url);
       const data = await result.json();
       if (schema) {
         schema.parse(data);
