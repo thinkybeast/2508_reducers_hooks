@@ -1,7 +1,7 @@
 import React from "react";
 import z from "zod";
 import Loading from "./Loading";
-import { randomErrorString } from "@/utils";
+import { randomError } from "@/utils";
 
 const userSchema = z.object({
   data: z.array(
@@ -27,7 +27,7 @@ const User = () => {
       await new Promise<void>((resolve) => setTimeout(() => resolve(), 1500));
 
       // Randomly throw an error to simulate an API failure
-      randomErrorString();
+      randomError();
 
       // Fetch user data from API
       const result = await fetch(
