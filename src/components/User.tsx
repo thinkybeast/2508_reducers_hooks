@@ -26,10 +26,12 @@ const User = () => {
       // Simulate a delay
       await new Promise<void>((resolve) => setTimeout(() => resolve(), 1500));
 
+      // Randomly throw an error to simulate an API failure
+      randomErrorString();
+
       // Fetch user data from API
-      // Randomly add either an empty string or an nonsense string to the URL to simulate an API error
       const result = await fetch(
-        "https://fakerapi.it/api/v2/users?_quantity=1" + randomErrorString()
+        "https://fakerapi.it/api/v2/users?_quantity=1"
       );
       const userData = await result.json();
 
@@ -65,7 +67,7 @@ const User = () => {
           <p>
             Meet <b>{user.firstname}!</b>
           </p>
-          <p>They are passionate about {user.website}</p>
+          <p>Check out their work at {user.website}!</p>
           <button onClick={fetchUser}>Not cool enough. Give me another.</button>
         </div>
       ) : null}
