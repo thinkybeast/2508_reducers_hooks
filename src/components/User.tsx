@@ -104,7 +104,7 @@ const User = () => {
       // Fetch user data from API
       // Randomly add either an empty string or an nonsense string to the URL to simulate an API error
       const result = await fetch(
-        "https://random-data-api.com/api/v2/users" + randomErrorString()
+        "https://fakerapi.it/api/v2/users?_quantity=1" + randomErrorString()
       );
       const userData = await result.json();
 
