@@ -1,6 +1,6 @@
 import React from "react";
 import { ZodSchema, ZodError } from "zod";
-import { randomErrorString } from "@/utils";
+import { randomError } from "@/utils";
 
 // Note the use of Generics to define the type of data that will be fetched
 type FetchState<T> = {
@@ -47,7 +47,7 @@ const useFetch = <T,>(
     dispatch({ type: "FETCH_LOADING" });
     try {
       await new Promise<void>((resolve) => setTimeout(() => resolve(), 1500));
-      randomErrorString();
+      randomError();
       const result = await fetch(url);
       const data = await result.json();
       if (schema) {
