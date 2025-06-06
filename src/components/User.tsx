@@ -63,7 +63,7 @@ const User = () => {
           <p>
             Meet <b>{user.firstname}!</b>
           </p>
-          <p>They are passionate about {user.website}</p>
+          <p>Check out their work at {user.website}</p>
           <button onClick={fetchUser}>Not cool enough. Give me another.</button>
         </div>
       ) : null}
