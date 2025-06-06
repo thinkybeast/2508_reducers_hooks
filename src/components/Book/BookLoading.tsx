@@ -1,7 +1,7 @@
 const Loading = () => {
   return (
     <h2 style={{ color: "orchid", fontStyle: "italic" }}>
-      Finding the coldest of beers...
+      Finding the most interesting of books...
     </h2>
   );
 };
