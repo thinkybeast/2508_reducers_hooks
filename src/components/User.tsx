@@ -2,7 +2,7 @@ import React from "react";
 import z from "zod";
 import Loading from "./Loading";
 import UserError from "./UserError";
-import { randomErrorString } from "@/utils";
+import { randomError } from "@/utils";
 
 /*
  Key idea: 
@@ -68,7 +68,7 @@ const User = () => {
       await new Promise<void>((resolve) => setTimeout(() => resolve(), 1500));
 
       // Randomly throw an error to simulate an API failure
-      randomErrorString();
+      randomError();
 
       // Fetch user data from API
       const result = await fetch(
@@ -115,7 +115,7 @@ const User = () => {
           <p>
             Meet <b>{user.firstname}!</b>
           </p>
-          <p>They are passionate about {user.website}</p>
+          <p>Check out their work at {user.website}!</p>
           <button onClick={fetchUser}>Not cool enough. Give me another.</button>
         </div>
       ) : null}
