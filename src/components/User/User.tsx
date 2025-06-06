@@ -4,11 +4,7 @@ import UserError from "./UserError";
 import useFetch from "@/hooks/useFetch";
 
 export const userSchema = z.object({
-  avatar: z.string(),
-  first_name: z.string(),
-  employment: z.object({
-    key_skill: z.string(),
-  }),
+  data: z.array(z.object({ firstname: z.string(), email: z.string(), website: z.string(), })),
 });
 
 export type User = z.infer<typeof userSchema>;
