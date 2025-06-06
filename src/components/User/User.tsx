@@ -15,7 +15,7 @@ export type User = z.infer<typeof userSchema>;
 
 const User = () => {
   const [{ data: user, isLoading, error }, fetchData] = useFetch<User>(
-    "https://random-data-api.com/api/v2/users",
+    "https://fakerapi.it/api/v2/users?_quantity=1",
     userSchema
   );
 
