@@ -14,7 +14,7 @@ export const bookSchema = z.object({
 
 export type BookResponse = z.infer<typeof bookSchema>;
 
-const User = () => {
+const Book = () => {
   const [{ data: bookResponse, isLoading, error }, fetchData] =
     useFetch<BookResponse>(
       "https://fakerapi.it/api/v2/books?_quantity=1",
@@ -46,4 +46,4 @@ const User = () => {
   ) : null;
 };
 
-export default User;
+export default Book;
