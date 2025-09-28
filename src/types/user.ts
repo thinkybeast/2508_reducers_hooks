@@ -15,5 +15,3 @@ export type UserState = {
   isLoading: boolean;
   error: boolean;
 };
-
-
