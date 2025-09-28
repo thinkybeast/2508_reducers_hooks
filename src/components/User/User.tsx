@@ -1,17 +1,7 @@
-import z from "zod";
+import { userSchema, type User } from "@/types/user";
 import Loading from "./UserLoading";
 import UserError from "./UserError";
 import useFetch from "@/hooks/useFetch";
-
-export const userSchema = z.object({
-  firstName: z.string(),
-  fullName: z.string(),
-  jobTitle: z.string(),
-  bio: z.string(),
-  avatar: z.string(),
-});
-
-export type User = z.infer<typeof userSchema>;
 
 const User = () => {
   const [{ data: user, isLoading, error }, fetchData] = useFetch<User>(
