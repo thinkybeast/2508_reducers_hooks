@@ -4,21 +4,20 @@ import UserError from "./UserError";
 import useFetch from "@/hooks/useFetch";
 
 export const userSchema = z.object({
-  data: z.array(
-    z.object({ firstname: z.string(), email: z.string(), website: z.string() })
-  ),
+  firstName: z.string(),
+  fullName: z.string(),
+  jobTitle: z.string(),
+  bio: z.string(),
+  avatar: z.string(),
 });
 
-export type UserResponse = z.infer<typeof userSchema>;
+export type User = z.infer<typeof userSchema>;
 
 const User = () => {
-  const [{ data: userResponse, isLoading, error }, fetchData] =
-    useFetch<UserResponse>(
-      "https://fakerapi.it/api/v2/users?_quantity=1",
-      userSchema
-    );
-
-  const user = userResponse?.data[0];
+  const [{ data: user, isLoading, error }, fetchData] = useFetch<User>(
+    "https://cool-fake-data.up.railway.app/api/user",
+    userSchema
+  );
 
   if (isLoading) {
     return <Loading />;
@@ -33,15 +32,14 @@ const User = () => {
       {user ? (
         <div>
           <div style={{ width: "310px", height: "310px", margin: "0 auto" }}>
-            <img
-              src={`https://robohash.org/${user.email}`}
-              key={`https://robohash.org/${user.email}`}
-            />
+            <img src={user.avatar} alt={user.fullName} />
           </div>
           <p>
-            Meet <b>{user.firstname}!</b>
+            Meet <b>{user.firstName}!</b> They are a <b>{user.jobTitle}</b>.
           </p>
-          <p>Check out their work at {user.website}!</p>
+          <p>
+            <b>Key facts:</b> {user.bio}
+          </p>
           <button onClick={fetchData}>Not cool enough. Give me another.</button>
         </div>
       ) : null}
