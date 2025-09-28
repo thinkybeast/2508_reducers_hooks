@@ -27,7 +27,9 @@ const User = () => {
           <p>
             Meet <b>{user.firstName}!</b> They are a <b>{user.jobTitle}</b>.
           </p>
-          <p><b>Key facts:</b> {user.bio}</p>
+          <p>
+            <b>Key facts:</b> {user.bio}
+          </p>
           <button onClick={fetchData}>Not cool enough. Give me another.</button>
         </div>
       ) : null}

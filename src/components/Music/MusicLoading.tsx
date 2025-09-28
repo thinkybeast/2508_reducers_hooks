@@ -7,5 +7,3 @@ const MusicLoading = () => {
 };
 
 export default MusicLoading;
-
-
