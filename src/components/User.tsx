@@ -1,20 +1,12 @@
 import React from "react";
-import z from "zod";
+import { userSchema } from "@/types/user";
 import type { User, UserState } from "@/types/user";
 import Loading from "./Loading";
 import UserError from "./UserError";
 import { randomError } from "@/utils";
 import userReducer, { UserAction } from "@/reducers/userReducer";
 
-const userSchema = z.object({
-  firstName: z.string(),
-  fullName: z.string(),
-  jobTitle: z.string(),
-  bio: z.string(),
-  avatar: z.string(),
-});
-
-type SchemaUser = z.infer<typeof userSchema>;
+// Schema is defined in types and imported; infer User from schema there
 
 const initialUserState: UserState = {
   user: null,
@@ -44,8 +36,8 @@ const User = () => {
       const userData = await result.json();
 
       // Validate API response and set user state
-      const parsedUser: SchemaUser = userSchema.parse(userData);
-      dispatch(UserAction.UserSuccess(parsedUser));
+      const parsedUser = userSchema.parse(userData);
+      dispatch(UserAction.UserSuccess(parsedUser as User));
     } catch (error) {
       // Set error state and log error
       dispatch(UserAction.UserError());
