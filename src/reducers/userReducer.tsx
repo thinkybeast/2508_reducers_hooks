@@ -2,19 +2,7 @@
     Note: In our updated application, we are using the custom hook useFetch to fetch user data. This code is therefore not needed in the User component, but is included here for reference.
 */
 
-interface User {
-  avatar: string;
-  first_name: string;
-  employment: {
-    key_skill: string;
-  };
-}
-
-interface UserState {
-  user: User | null;
-  isLoading: boolean;
-  error: boolean;
-}
+import type { User, UserState } from "@/types/user";
 
 /*
 Actions: Objects that describe the type of change we want to make to our state
