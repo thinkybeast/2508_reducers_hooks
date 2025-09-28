@@ -1,7 +1,7 @@
 import useFetch from "@/hooks/useFetch";
 import { musicSchema, type Music } from "@/types/music";
-import Loading from "@/components/Book/BookLoading";
-import ErrorView from "@/components/Book/BookError";
+import Loading from "./MusicLoading";
+import ErrorView from "./MusicError";
 
 const Music = () => {
   const [{ data: music, isLoading, error }, fetchData] = useFetch<Music>(
@@ -15,7 +15,7 @@ const Music = () => {
   return music ? (
     <article>
       <h2>
-        Now playing: <strong>{music.songName}</strong>
+        🎵 Now playing: <strong>{music.songName}</strong>
       </h2>
       <p>Artist: {music.artist}</p>
       <p>Album: {music.album}</p>
