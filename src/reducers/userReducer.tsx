@@ -1,4 +1,4 @@
-import type { UserState, User } from "@/components/User";
+import type { UserState, User } from "@/types/user";
 /*
 Actions: Objects that describe the type of change we want to make to our state
 

@@ -1,29 +1,20 @@
 import React from "react";
 import z from "zod";
+import type { User, UserState } from "@/types/user";
 import Loading from "./Loading";
 import UserError from "./UserError";
 import { randomError } from "@/utils";
 import userReducer, { UserAction } from "@/reducers/userReducer";
 
-export const userSchema = z.object({
-  data: z.array(
-    z.object({
-      firstname: z.string(),
-      email: z.string(),
-      website: z.string(),
-    })
-  ),
+const userSchema = z.object({
+  firstName: z.string(),
+  fullName: z.string(),
+  jobTitle: z.string(),
+  bio: z.string(),
+  avatar: z.string(),
 });
 
-export type UserResponse = z.infer<typeof userSchema>;
-export type User = UserResponse["data"][0];
-
-// Define the initial state of the component data
-export type UserState = {
-  user: User | null;
-  isLoading: boolean;
-  error: boolean;
-};
+type SchemaUser = z.infer<typeof userSchema>;
 
 const initialUserState: UserState = {
   user: null,
@@ -46,17 +37,15 @@ const User = () => {
       // Randomly throw an error to simulate an API failure
       randomError();
 
-      // Fetch user data from API
+      // Fetch user data from new API
       const result = await fetch(
-        "https://fakerapi.it/api/v2/users?_quantity=1"
+        "https://cool-fake-data.up.railway.app/api/user"
       );
       const userData = await result.json();
 
-      // Validate API response
-      userSchema.parse(userData);
-
-      // Set user state
-      dispatch(UserAction.UserSuccess(userData.data[0]));
+      // Validate API response and set user state
+      const parsedUser: SchemaUser = userSchema.parse(userData);
+      dispatch(UserAction.UserSuccess(parsedUser));
     } catch (error) {
       // Set error state and log error
       dispatch(UserAction.UserError());
@@ -83,15 +72,14 @@ const User = () => {
       {user ? (
         <div>
           <div style={{ width: "310px", height: "310px", margin: "0 auto" }}>
-            <img
-              src={`https://robohash.org/${user.email}`}
-              key={`https://robohash.org/${user.email}`}
-            />
+            <img src={user.avatar} alt={user.fullName} />
           </div>
           <p>
-            Meet <b>{user.firstname}!</b>
+            Meet <b>{user.firstName}!</b> They are a <b>{user.jobTitle}</b>.
           </p>
-          <p>Check out their work at {user.website}!</p>
+          <p>
+            <b>Key facts:</b> {user.bio}
+          </p>
           <button onClick={fetchUser}>Not cool enough. Give me another.</button>
         </div>
       ) : null}
