@@ -14,17 +14,23 @@ const userSchema = z.object({
 
 type User = z.infer<typeof userSchema>;
 
+interface UserState {
+  user: User | null;
+  isLoading: boolean;
+  error: boolean;
+}
+
 const User = () => {
-  const [user, setUser] = React.useState<User | null>(null);
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [error, setError] = React.useState<boolean>(false);
+  const [userState, setUserState] = React.useState<UserState>({
+    user: null,
+    isLoading: false,
+    error: false,
+  });
 
   async function fetchUser() {
     try {
       // Reset state
-      setIsLoading(true);
-      setUser(null);
-      setError(false);
+      setUserState({ user: null, isLoading: true, error: false });
 
       // Simulate a delay
       await new Promise<void>((resolve) => setTimeout(() => resolve(), 1500));
@@ -40,14 +46,14 @@ const User = () => {
 
       // Validate API response
       userSchema.parse(userData);
-      setUser(userData);
+      setUserState({ user: userData, isLoading: false, error: false });
     } catch (error) {
       // Set error state and log error
-      setError(true);
+      setUserState({ user: null, isLoading: false, error: true });
       console.error(error);
     } finally {
       // Reset loading state
-      setIsLoading(false);
+      setUserState({ user: null, isLoading: false, error: false });
     }
   }
 
@@ -56,26 +62,27 @@ const User = () => {
     fetchUser();
   }, []);
 
-  if (isLoading) {
+  if (userState.isLoading) {
     return <Loading />;
   }
 
-  if (error) {
+  if (userState.error) {
     return <UserError onRetry={fetchUser} />;
   }
 
   return (
     <article>
-      {user ? (
+      {userState.user ? (
         <div>
           <div style={{ width: "310px", height: "310px", margin: "0 auto" }}>
-            <img src={user.avatar} alt={user.fullName} />
+            <img src={userState.user.avatar} alt={userState.user.fullName} />
           </div>
           <p>
-            Meet <b>{user.firstName}!</b> They are a <b>{user.jobTitle}</b>.
+            Meet <b>{userState.user.firstName}!</b> They are a{" "}
+            <b>{userState.user.jobTitle}</b>.
           </p>
           <p>
-            <b>Key facts:</b> {user.bio}
+            <b>Key facts:</b> {userState.user.bio}
           </p>
           <button onClick={fetchUser}>Not cool enough. Give me another.</button>
         </div>
