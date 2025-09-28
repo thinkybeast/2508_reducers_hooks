@@ -23,20 +23,18 @@ import { randomError } from "@/utils";
 */
 
 const userSchema = z.object({
-  data: z.array(
-    z.object({
-      firstname: z.string(),
-      email: z.string(),
-      website: z.string(),
-    })
-  ),
+  firstName: z.string(),
+  fullName: z.string(),
+  jobTitle: z.string(),
+  bio: z.string(),
+  avatar: z.string(),
 });
 
-type UserResponse = z.infer<typeof userSchema>;
+type User = z.infer<typeof userSchema>;
 
 // Define the initial state of the component data
 type UserState = {
-  user: UserResponse["data"][0] | null;
+  user: User | null;
   isLoading: boolean;
   error: boolean;
 };
@@ -70,9 +68,9 @@ const User = () => {
       // Randomly throw an error to simulate an API failure
       randomError();
 
-      // Fetch user data from API
+      // Fetch user data from new API
       const result = await fetch(
-        "https://fakerapi.it/api/v2/users?_quantity=1"
+        "https://cool-fake-data.up.railway.app/api/user"
       );
       const userData = await result.json();
 
@@ -80,7 +78,7 @@ const User = () => {
       userSchema.parse(userData);
 
       // Set user state
-      setUserState({ user: userData.data[0], isLoading: false, error: false });
+      setUserState({ user: userData, isLoading: false, error: false });
     } catch (error) {
       // Set error state and log error
       setUserState({ user: null, isLoading: false, error: true });
@@ -107,15 +105,14 @@ const User = () => {
       {user ? (
         <div>
           <div style={{ width: "310px", height: "310px", margin: "0 auto" }}>
-            <img
-              src={`https://robohash.org/${user.email}`}
-              key={`https://robohash.org/${user.email}`}
-            />
+            <img src={user.avatar} alt={user.fullName} />
           </div>
           <p>
-            Meet <b>{user.firstname}!</b>
+            Meet <b>{user.firstName}!</b> They are a <b>{user.jobTitle}</b>.
           </p>
-          <p>Check out their work at {user.website}!</p>
+          <p>
+            <b>Key facts:</b> {user.bio}
+          </p>
           <button onClick={fetchUser}>Not cool enough. Give me another.</button>
         </div>
       ) : null}
