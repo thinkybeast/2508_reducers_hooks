@@ -1,13 +1,13 @@
 import "./App.css";
 import User from "@/components/User";
-import Beer from "@/components/Beer";
+import Music from "@/components/Music";
 
 function App() {
   return (
     <main>
       <h1>Cool User of the Day</h1>
       <User />
-      <Beer />
+      <Music />
     </main>
   );
 }

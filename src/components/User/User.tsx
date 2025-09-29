@@ -1,21 +1,11 @@
-import z from "zod";
 import Loading from "@/components/shared/Loading";
 import Error from "@/components/shared/Error";
 import useFetch from "@/hooks/useFetch";
-
-const userSchema = z.object({
-  avatar: z.string(),
-  first_name: z.string(),
-  employment: z.object({
-    key_skill: z.string(),
-  }),
-});
-
-type User = z.infer<typeof userSchema>;
+import { userSchema, type User } from "@/types/user";
 
 const User = () => {
   const [{ data: user, isLoading, error }, fetchData] = useFetch<User>(
-    "https://random-data-api.com/api/v2/users",
+    "https://cool-fake-data.up.railway.app/api/user",
     userSchema
   );
 
@@ -36,12 +26,14 @@ const User = () => {
       {user ? (
         <div>
           <div style={{ width: "310px", height: "310px", margin: "0 auto" }}>
-            <img src={user.avatar} key={user.avatar} />
+            <img src={user.avatar} alt={user.fullName} />
           </div>
           <p>
-            Meet <b>{user.first_name}!</b>
+            Meet <b>{user.firstName}!</b> They are a <b>{user.jobTitle}</b>.
           </p>
-          <p>They are passionate about {user.employment.key_skill}</p>
+          <p>
+            <b>Key facts:</b> {user.bio}
+          </p>
           <button onClick={fetchData}>Not cool enough. Give me another.</button>
         </div>
       ) : null}

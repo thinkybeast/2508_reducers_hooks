@@ -1,3 +1,6 @@
 export const randomErrorString = (percentChance: number = 0.3) => {
-  return Math.random() > percentChance ? "" : "asdf";
+  if (Math.random() <= percentChance) {
+    throw new Error("Simulated API error");
+  }
+  return "";
 };
